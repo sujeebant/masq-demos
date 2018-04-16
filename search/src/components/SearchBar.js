@@ -1,6 +1,9 @@
 import React from 'react'
+import Downshift from 'downshift'
 
 import Search from '../icons/Search'
+
+const items = ['apple', 'pear', 'orange', 'grape', 'banana']
 
 const styles = {
   SearchBar: {
@@ -28,14 +31,60 @@ const styles = {
     float: 'right',
     color: '#747474',
     cursor: 'pointer'
+  },
+  downshift: {
+    marginTop: 58,
+    textAlign: 'left',
+    cursor: 'pointer',
+    lineHeight: '32px',
+    boxShadow: 'grey 3px 5px 9px 2px'
+  },
+  downshiftRow: {
+    fontSize: 20
   }
 }
 
 export default function SearchBar (props) {
   return (
-    <form style={styles.SearchBar}>
-      <input style={styles.input} placeholder='What are you looking for?' />
-      <Search style={styles.icon} />
-    </form>
+    <Downshift
+      render={({
+        getInputProps,
+        getItemProps,
+        isOpen,
+        inputValue,
+        highlightedIndex,
+        selectedItem
+      }) => (
+        <div style={styles.SearchBar}>
+          <div>
+            <input {...getInputProps()} style={styles.input} placeholder='What are you looking for?' />
+            <Search style={styles.icon} />
+          </div>
+
+          {isOpen &&
+            <div style={styles.downshift}>
+              {items
+                .filter(i => !inputValue || i.includes(inputValue))
+                .map((item, index) => (
+                  <div
+                    {...getItemProps({
+                      key: item,
+                      index,
+                      item,
+                      style: Object.assign({}, styles.downshiftRow, {
+                        backgroundColor:
+                          highlightedIndex === index ? 'lightgray' : 'white',
+                        fontWeight: selectedItem === item ? 'bold' : 'normal'
+                      })
+                    })}
+                  >
+                    {item}
+                  </div>
+                ))}
+            </div>
+          }
+        </div>
+      )}
+    />
   )
 }
