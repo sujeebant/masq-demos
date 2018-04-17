@@ -57,9 +57,12 @@ export default class SearchBar extends React.Component {
   }
 
   handleKeyPress (e) {
-    if (e.key === 'Enter') {
-      this.openQwant()
+    if (e.key !== 'Enter') { return }
+
+    if (this.props.onSearch) {
+      this.props.onSearch(this.state.query)
     }
+    this.openQwant()
   }
 
   render () {
