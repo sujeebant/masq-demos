@@ -6,8 +6,22 @@ import SearchBar from './components/SearchBar'
 import { Client } from './masq/client'
 
 class App extends Component {
-  onSearch (query) {
+  constructor (props) {
+    super(props)
+    this.state = { items: [] }
+    this.client = null
+    this.onSearch = this.onSearch.bind(this)
+  }
+
+  async onSearch (query) {
     console.log('query:', query)
+    this.currentKey++
+    await this.client.setItem(this.currentKey, query)
+    let items = this.state.items.slice()
+    items.push(query)
+    this.setState({
+      items: items
+    })
   }
 
   async componentDidMount () {
@@ -16,14 +30,39 @@ class App extends Component {
       name: 'Masq Search',
       description: 'Masq Search'
     }
+    const settings = {
+      socketUrl: 'ws://localhost:8080',
+      socketConf: { requestTimeout: 0 }
+    }
+
     try {
-      const client = new Client({
-        socketUrl: 'ws://localhost:8080',
-        socketConf: { requestTimeout: 0 }
+      const token = window.localStorage.getItem('token')
+      if (token) {
+        settings['authToken'] = token
+      }
+
+      this.client = new Client(settings)
+      await this.client.initWS()
+
+      if (!token) {
+        // Register the app and save the returned token
+        const token = await this.client.addApp(appInfo)
+        window.localStorage.setItem('token', token)
+      }
+
+      // Get Search history
+      const keys = (await this.client.listKeys()).data
+      let values = []
+      for (let key of keys) {
+        values.push((await this.client.getItem(key)).data)
+      }
+      this.setState({
+        items: values
       })
-      await client.initWS()
-      await client.addApp(appInfo)
-      await client.setItem('key', 'value')
+
+      this.currentKey = keys.length
+      console.log('keys:', keys)
+      console.log('values:', values)
     } catch (err) {
       console.error(err)
     }
@@ -32,7 +71,7 @@ class App extends Component {
   render () {
     return (
       <div className='App'>
-        <SearchBar onSearch={this.onSearch} />
+        <SearchBar onSearch={this.onSearch} items={this.state.items} />
       </div>
     )
   }

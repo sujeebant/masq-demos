@@ -3,8 +3,6 @@ import Downshift from 'downshift'
 
 import Search from '../icons/Search'
 
-const items = ['apple', 'pear', 'orange', 'grape', 'banana']
-
 const styles = {
   SearchBar: {
     position: 'absolute',
@@ -47,7 +45,9 @@ const styles = {
 export default class SearchBar extends React.Component {
   constructor (props) {
     super(props)
-    this.state = { query: '' }
+    this.state = {
+      query: ''
+    }
     this.openQwant = this.openQwant.bind(this)
     this.handleKeyPress = this.handleKeyPress.bind(this)
   }
@@ -90,12 +90,12 @@ export default class SearchBar extends React.Component {
 
             {isOpen &&
               <div style={styles.downshift}>
-                {items
+                {this.props.items
                   .filter(i => !inputValue || i.includes(inputValue))
                   .map((item, index) => (
                     <div
                       {...getItemProps({
-                        key: item,
+                        key: index,
                         index,
                         item,
                         style: Object.assign({}, styles.downshiftRow, {
