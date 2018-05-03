@@ -15,7 +15,7 @@ class App extends Component {
 
   async onSearch (query) {
     console.log('query:', query)
-    let occurences = (await this.client.getItem(query)).data || 0
+    let occurences = (await this.client.getItem(query)) || 0
     await this.client.setItem(query, occurences + 1)
     let items = this.state.items.slice()
     items.push(query)
@@ -51,7 +51,7 @@ class App extends Component {
       }
 
       // Get Search history
-      const keys = (await this.client.listKeys()).data
+      const keys = (await this.client.listKeys())
       this.setState({
         items: keys
       })
