@@ -50,6 +50,11 @@ export default class SearchBar extends React.Component {
     }
     this.openQwant = this.openQwant.bind(this)
     this.handleKeyPress = this.handleKeyPress.bind(this)
+    this.inputRef = React.createRef()
+  }
+
+  componentDidMount () {
+    this.inputRef.current.focus()
   }
 
   openQwant () {
@@ -84,7 +89,7 @@ export default class SearchBar extends React.Component {
             <div>
               <input {...getInputProps({
                 onKeyUp: this.handleKeyPress
-              })} style={styles.input} placeholder='What are you looking for?' />
+              })} style={styles.input} ref={this.inputRef} placeholder='What are you looking for?' />
               <Search onClick={this.openQwant} style={styles.icon} />
             </div>
 
