@@ -58,6 +58,9 @@ class App extends Component {
 
       console.log('keys:', keys)
     } catch (err) {
+      if (err.status === 403) {
+        window.localStorage.removeItem('token')
+      }
       console.error(err)
     }
   }
