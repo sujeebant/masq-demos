@@ -28,7 +28,7 @@ class App extends Component {
     const appInfo = {
       url: 'https://masq.io/search',
       name: 'Masq Search',
-      description: 'Masq Search'
+      description: 'Simple search engine using qwant.com'
     }
     const settings = {
       socketUrl: 'ws://localhost:8080',
