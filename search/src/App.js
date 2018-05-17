@@ -3,7 +3,7 @@ import './App.css'
 
 import SearchBar from './components/SearchBar'
 
-import { Client } from './masq/client'
+import { Client } from 'masq-client'
 
 class App extends Component {
   constructor (props) {
