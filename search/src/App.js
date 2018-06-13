@@ -17,6 +17,8 @@ class App extends Component {
     console.log('query:', query)
     let occurences = (await this.client.getItem(query)) || 0
     await this.client.setItem(query, occurences + 1)
+
+    if (occurences > 0) return
     let items = this.state.items.slice()
     items.push(query)
     this.setState({
