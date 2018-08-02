@@ -5,10 +5,19 @@ import SearchBar from './components/SearchBar'
 
 import { Client } from 'masq-client'
 
+function ConnectionStatus ({ isConnected }) {
+  return isConnected
+    ? <p style={{ color: 'green' }}>Connected to Masq</p>
+    : <p style={{ color: 'red' }}>Disconnected from Masq</p>
+}
+
 class App extends Component {
   constructor (props) {
     super(props)
-    this.state = { items: [] }
+    this.state = {
+      items: [],
+      isConnected: false
+    }
     this.client = null
     this.onSearch = this.onSearch.bind(this)
   }
@@ -44,7 +53,20 @@ class App extends Component {
       }
 
       this.client = new Client(settings)
-      await this.client.initWS()
+
+      await this.client.init()
+
+      this.setState({ isConnected: true })
+
+      this.client.ws.onopen(() => {
+        this.setState({ isConnected: true })
+      })
+      this.client.ws.onreopen(() => {
+        this.setState({ isConnected: true })
+      })
+      this.client.ws.onclose(() => {
+        this.setState({ isConnected: false })
+      })
 
       if (!token) {
         // Register the app and save the returned token
@@ -68,8 +90,10 @@ class App extends Component {
   }
 
   render () {
+    const { isConnected } = this.state
     return (
       <div className='App'>
+        <ConnectionStatus isConnected={isConnected} />
         <SearchBar onSearch={this.onSearch} items={this.state.items} />
       </div>
     )
