@@ -4,16 +4,12 @@
   "private": true,
   "dependencies": {
     "downshift": "^1.31.7",
-    "hyperdb": "^3.5.0",
-    "masq-client": "git+https://github.com/QwantResearch/masq-client.git",
-    "random-access-memory": "^3.0.0",
+    "masq-lib": "git+https://github.com/QwantResearch/masq-lib.git",
     "react": "^16.3.1",
     "react-dom": "^16.3.1",
-    "react-scripts": "1.1.4",
-    "signalhub": "^4.9.0",
+    "react-scripts": "2.1.1",
     "standard": "^11.0.1",
-    "typeface-roboto": "0.0.54",
-    "webrtc-swarm": "^2.9.0"
+    "typeface-roboto": "0.0.54"
   },
   "scripts": {
     "start": "PORT=3001 react-scripts start",
@@ -22,5 +18,11 @@
     "eject": "react-scripts eject",
     "standard": "standard \"src/**/*.js\"",
     "standard-fix": "standard --fix \"src/**/*.js\""
-  }
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }
