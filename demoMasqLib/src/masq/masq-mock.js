@@ -7,7 +7,8 @@ const pump = require('pump')
 const EventEmitter = require('events')
 const dbExists = require('./indexedDBUtils').dbExists
 
-const HUB_URL = 'localhost:8080'
+const HUB_URL = 'sync-beta.qwantresearch.com:8080'
+// const HUB_URL = 'localhost:8080'
 const debug = (str) => {
   if (process.env.NODE_ENV !== 'production') console.log(str)
 }
