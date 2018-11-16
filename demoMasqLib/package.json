@@ -8,7 +8,8 @@
     "demo": "npm run babel-app && npm run babel-masqMock ",
     "babel-app": "babel ./src/app --presets env --out-dir dist/app",
     "babel-masqMock": "babel ./src/masq --presets env --out-dir dist/masq",
-    "start": "http-server ."
+    "server": "node src/server.js",
+    "start": "concurrently \"npm run server\" \"http-server . -p 8081\""
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
@@ -33,8 +34,9 @@
     "wrtc": "^0.2.1"
   },
   "dependencies": {
-    "masq-lib": "git+https://github.com/QwantResearch/masq-lib",
-    "http-server": "^0.11.1"
+    "concurrently": "^4.0.1",
+    "http-server": "^0.11.1",
+    "masq-lib": "git+https://github.com/QwantResearch/masq-lib"
   },
   "author": "LD",
   "license": "ISC"
