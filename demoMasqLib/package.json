@@ -23,11 +23,7 @@
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-standard": "^4.0.0",
     "webpack": "^4.20.2",
-    "webpack-cli": "^3.1.2"
-  },
-  "dependencies": {
-    "masq-lib": "git+https://github.com/QwantResearch/masq-lib",
-    "http-server": "^0.11.1",
+    "webpack-cli": "^3.1.2",
     "hyperdb": "^3.5.0",
     "pump": "^3.0.0",
     "random-access-idb": "^1.2.0",
@@ -35,6 +31,10 @@
     "uuid": "^3.3.2",
     "webrtc-swarm": "^2.9.0",
     "wrtc": "^0.2.1"
+  },
+  "dependencies": {
+    "masq-lib": "git+https://github.com/QwantResearch/masq-lib",
+    "http-server": "^0.11.1"
   },
   "author": "LD",
   "license": "ISC"
