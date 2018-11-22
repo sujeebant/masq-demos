@@ -44,7 +44,8 @@ document.addEventListener('DOMContentLoaded', function () {
 const initMasqMock = async () => {
   debug('initMasqMock')
 
-  masqCore = new MasqCore()
+  // masqCore = new MasqCore({ hubURL: 'localhost:8080' })
+  masqCore = new MasqCore({ hubURL: 'wss://signalhub-jvunerwwrg.now.sh' })
   await masqCore.init()
   await masqCore.initProfiles()
   await masqCore.setProfile('bob', profile)

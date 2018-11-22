@@ -7,11 +7,9 @@ const pump = require('pump')
 const EventEmitter = require('events')
 const dbExists = require('./indexedDBUtils').dbExists
 
-const HUB_URL = 'sync-beta.qwantresearch.com:8080'
-// const HUB_URL = 'localhost:8080'
-const debug = (str) => {
-  if (process.env.NODE_ENV !== 'production') console.log(str)
-}
+const HUB_URL = 'localhost:8080'
+
+const debug = console.log
 
 /**
  * Return when hyperDb instance is ready
@@ -29,9 +27,10 @@ class MasqMock extends EventEmitter {
   /**
    * constructor
    */
-  constructor () {
+  constructor (options = {}) {
     super()
     this.currentProfile = null
+    this.hubURL = options.hubURL || HUB_URL
     this.currentId = null
     this.localKey = null
     this.sws = {}
@@ -247,7 +246,7 @@ class MasqMock extends EventEmitter {
   _initSwarmWithDataHandler (channel, dataHandler, initalMessage) {
     // Subscribe to channel for a limited time to sync with masq
     debug(`I create a hub with the channel ${channel}`)
-    const hub = signalhub(channel, [HUB_URL])
+    const hub = signalhub(channel, [this.hubURL])
     let sw = null
 
     if (swarm.WEBRTC_SUPPORT) {
@@ -257,7 +256,7 @@ class MasqMock extends EventEmitter {
     }
 
     sw.on('peer', (peer, id) => {
-      debug('a peer join us...')
+      debug(`The peer ${id} join us...`)
       if (initalMessage) { peer.send(initalMessage) }
       peer.on('data', data => dataHandler(sw, peer, data))
     })
@@ -303,7 +302,7 @@ class MasqMock extends EventEmitter {
   _startReplication (db, name) {
     debug(`Start replication for ${name}`)
     const discoveryKey = db.discoveryKey.toString('hex')
-    this.hubs[name] = signalhub(discoveryKey, [HUB_URL])
+    this.hubs[name] = signalhub(discoveryKey, [this.hubURL])
     const hub = this.hubs[name]
 
     if (swarm.WEBRTC_SUPPORT) {
@@ -313,7 +312,10 @@ class MasqMock extends EventEmitter {
     }
     const sw = this.sws[name]
 
+    debug(`I am  ${sw.me}`)
+
     sw.on('peer', async (peer, id) => {
+      debug(`The peer ${id} join us...`)
       const stream = db.replicate({ live: true })
       pump(peer, stream, peer)
     })
@@ -325,13 +327,11 @@ class MasqMock extends EventEmitter {
     }
     sw.on('close', (msg) => {
       debug(`startReplication close for ${name}`)
-      hub.close()
     })
 
     sw.on('disconnect', (peer, id) => {
       debug(`startReplication disconnect for ${name}`)
-      sw.close()
-      hub.close()
+      debug(`The peer ${id} leave us :-| ...`)
     })
   }
   /** open and sync existing databases */

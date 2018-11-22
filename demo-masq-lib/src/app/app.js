@@ -12,7 +12,6 @@ const villes = data.villes
 
 console.log(Masq)
 
-
 const debug = (str) => {
   if (process.env.NODE_ENV !== 'production') console.log(str)
 }
@@ -144,7 +143,8 @@ const checkDB = async () => {
 }
 
 const connectMasq = async () => {
-  masq = new Masq()
+  masq = new Masq({ hubURL: 'wss://signalhub-jvunerwwrg.now.sh' })
+  // masq = new Masq({ hubURL: 'localhost:8080' })
   await masq.init()
 
   // We force channel and challenge for demo purpose
