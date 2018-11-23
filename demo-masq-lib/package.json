@@ -36,7 +36,7 @@
   "dependencies": {
     "concurrently": "^4.0.1",
     "http-server": "^0.11.1",
-    "masq-lib": "git+https://github.com/QwantResearch/masq-lib"
+    "masq-lib": "git+https://github.com/QwantResearch/masq-lib#7ddba2d020bb2e1752d39820f10ca6454319ff5b"
   },
   "author": "LD",
   "license": "ISC"
