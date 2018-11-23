@@ -52,12 +52,12 @@ const initMasqMock = async () => {
   const profile1 = await masqCore.getProfile('bob')
   debug(JSON.stringify(profile1))
   let el = document.getElementById('step1')
-  el.innerHTML = `Now, click on Masq Connect in app`
+  el.innerHTML = fillElement(`Now, click on Masq Connect in app`)
 }
 
 const receiveLinkMasqProfiles = () => {
   let el = document.getElementById('checkIfProfilesSynced')
-  el.innerHTML = ` Sync. of profiles is done, check the app.`
+  el.innerHTML = fillElement(` Sync. of profiles is done, check the app.`)
   masqCore.receiveLink({
     type: 'syncProfiles',
     channel: channel,
@@ -67,7 +67,7 @@ const receiveLinkMasqProfiles = () => {
 
 const receiveLinkSyncData = () => {
   let el = document.getElementById('addDatainApp')
-  el.innerHTML = ` Now add data in app, Masq will receive the same data :-)`
+  el.innerHTML = fillElement(` Now add data in app, Masq will receive the same data :-;`)
   masqCore.receiveLink({
     type: 'syncData',
     channel: channel2,
@@ -77,8 +77,8 @@ const receiveLinkSyncData = () => {
   masqCore.on('changePOI', async msg => {
     // check if item is replicated in masq
     const POI = await masqCore.getItem(appName, '/POI')
-    let el = document.getElementById('checkDataMsg')
-    el.innerHTML = ` We receive: ${JSON.stringify(POI)}`
+    let el = document.getElementById('addDatainApp')
+    el.innerHTML = fillElement(` We receive: ${JSON.stringify(POI)}`)
   })
 }
 
@@ -88,7 +88,11 @@ const init = async () => {
   masqCore.on('changePOI', async msg => {
     // check if item is replicated in masq
     const POI = await masqCore.getItem(appName, '/POI')
-    let el = document.getElementById('checkDataMsg')
-    el.innerHTML = ` We receive: ${JSON.stringify(POI)}`
+    let el = document.getElementById('addDatainApp')
+    el.innerHTML = fillElement(` We receive: ${JSON.stringify(POI)}`)
   })
+}
+
+const fillElement = (str) => {
+  return `<h3>Output</h3><p>${str}</p>`
 }

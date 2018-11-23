@@ -1,56 +1,107 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<title>Masq web App ---</title>
-<link href="../masq/masq.css" type="text/css" rel="stylesheet" />
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Web app</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
 
-<!-- <script type="text/javascript" src="dist/crypto.min.js"></script> -->
-</head>
-<body >
-    <div class="container content" id="main-content">
-        <article>
-            <h1>Masq app demo</h1>
-            <p>This is the demo of a web application </p>
-           <!-- <br> -->
-           <!-- <button class="button" type="button" id="localTest">Create a local hyperDB</button>
-           <button class="button" type="button" id="checkDB">Check if db exists</button> -->
-           <!-- <br/> -->
-           <br/>
-           <button class="button" type="button" id="connectMasq">Connect to Masq </button>
-           <br>
-           <br>
-           <button style="align-items: flex-start" class="button" type="button" id="updateMasqProfiles">Check if we have synced profiles</button>
-           <br>
-           <br>
-           <button style="align-items: flex-start" class="button" type="button" id="replicateData">Add/update a list of POI</button>
-          
-           <br>
-           <br>
-           <button style="align-items: flex-start" class="button" type="button" id="init">Test openAndSyncDatabases</button>
-          
-           
-                <table>
+    <!-- Custom styles for this template -->
+    <link href="app.css" rel="stylesheet">
+  </head>
 
-                    <tr>
-                        <th> </th>
-                    </tr>
-                    <tr>
-                        <th> </th>
-                    </tr>
-                </table>
-                <h2>Info </h2>
-                <p>The first step is to add a profile in Masq</p>
-                <ul id="receiveLinkMsgProfiles"></ul>
-                <ul id="masqProfilesReplication"></ul>
-                <ul id="addData"></ul>            
-                
-                
-                <!-- <p>The read operation with one instance requires one setItem and one entire ooperation instead of 2. </p> -->
-        </article>
-</div>
-    <!-- <script type="text/javascript" src="../node_modules/masq-crypto/dist/MasqCrypto.js"></script> -->
-    <!-- <script type="text/javascript" src="../dist/MasqSync.js"></script> -->
+  <body>
+
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+      <a class="navbar-brand" href="#">Masq</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link"  href="../index.html">Masq-app</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="./index.html">Masq web App <span class="sr-only">(current)</span></a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <main role="main">
+
+      <!-- Main jumbotron for a primary marketing message or call to action -->
+      <div class="jumbotron">
+        <div class="container">
+          <h1 class="display-4">A web app</h1>
+          <p>This app wants to store its data in Masq. Discover how by clicking first on 'Create profile button' in Masq-app.</p>
+        </div>
+      </div>
+
+      <div class="container">
+        <!-- Example row of columns -->
+        <div class="row">
+          <div class="col-md-6">
+            <h3>Connect to Masq</h3>
+            <p>Let's ask to connect this application to Masq-app.</p>
+            <p><a class="btn btn-primary btn-md" id="connectMasq" href="#" role="button">Connect</a></p>
+          </div>
+          <div class="col-md-6">
+                <div id=receiveLinkMsgProfiles></div>
+            </div>
+        </div> 
+        <div class="row">
+                <div class="col-md-6">
+                  <h3>Check profiles</h3>
+                  <p>Check if we have synced the profiles.</p>
+                  <p><a class="btn btn-primary btn-md" id="updateMasqProfiles" href="#" role="button">Check profiles</a></p>
+                </div>
+                <div class="col-md-6">
+                      <div id=masqProfilesReplication></div>
+                  </div>
+              </div>
+        <div class="row">
+            <div class="col-md-6">
+                <h3>Add POI</h3>
+                <p>Add/update a list of POI. </p>
+                <p><a class="btn btn-primary btn-md" id="replicateData" href="#" role="button">Check data sync</a></p>
+            </div>
+            <div class="col-md-6">
+                <div id=addData></div>                    
+                </div>
+            </div>
+        <div class="row">
+            <div class="col-md-6">
+                <h3>A connection trouble ?</h3>
+                <p>If you close the tab or the connection is lost, click here. </p>
+                <p><a class="btn btn-info btn-md" id="init" href="#" role="button">Open and sync.</a></p>
+            </div>
+    
+    </div>
+
+        <hr>
+
+      </div> <!-- /container -->
+
+    </main>
+
+    <footer class="container">
+      <p>&copy; Qwant</p>
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <script type="text/javascript" src="../../dist/masqApp.bundle.js"></script>
-</body>
+  </body>
 </html>

@@ -90,6 +90,8 @@ document.addEventListener('DOMContentLoaded', function () {
   var el = document.getElementById('localTest')
   if (el) {
     el.addEventListener('click', function (e) {
+      console.log('hello world')
+
       createLocalHyperDB()
     })
   }
@@ -102,6 +104,7 @@ document.addEventListener('DOMContentLoaded', function () {
   el = document.getElementById('connectMasq')
   if (el) {
     el.addEventListener('click', function (e) {
+      console.log('hello woooooooooooooooooorld')
       connectMasq()
     })
   }
@@ -153,7 +156,7 @@ const connectMasq = async () => {
   masq.challenge = challenge
   masq.requestMasqAccess()
   let el = document.getElementById('receiveLinkMsgProfiles')
-  el.innerHTML = ` Now, please click on receive Link in Masq in order to send the new channel name and the challenge. `
+  el.innerHTML = fillElement(` Now, please click on 'Synchronize profiles' in Masq. `)
 }
 
 const updateMasqProfiles = async () => {
@@ -162,7 +165,7 @@ const updateMasqProfiles = async () => {
     const profiles = await masq.getProfiles()
     if (!profiles) { debug('profiles is empty!') }
     let el = document.getElementById('masqProfilesReplication')
-    el.innerHTML = ` Of course your are ${profiles[0].username}, your id is  ${profiles[0].id}, now click on receive link for data replication and authorization`
+    el.innerHTML = fillElement(` Of course your are ${profiles[0].username}, your id is  ${profiles[0].id}, now click on 'Synchronize data' for data replication and authorization`)
     masq.setProfile(profiles[0].id)
     masq.channel = channel2
     masq.exchangeDataHyperdbKeys()
@@ -179,7 +182,7 @@ const replicateData = async () => {
   let actualPOI = await masq.get('/POI')
   if (!actualPOI) { actualPOI = [] }
   const newPOI = [...actualPOI, POI]
-  el.innerHTML = ` We add a list of POI : ${JSON.stringify(newPOI)}. `
+  el.innerHTML = fillElement(` We add a list of POI : ${JSON.stringify(newPOI)}. `)
 
   await wait()
   try {
@@ -197,4 +200,7 @@ const init = async () => {
   const profiles = await masq.getProfiles()
   debug(`sync dones, get profiles : ${profiles[0].username}`)
   if (profiles[0]) { masq.setProfile(profiles[0].id) }
+}
+const fillElement = (str) => {
+  return `<h3>Output</h3><p>${str}</p>`
 }
