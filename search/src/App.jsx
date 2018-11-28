@@ -5,6 +5,7 @@ import SearchBar from './components/SearchBar'
 import Profiles from './components/Profiles'
 
 import './App.css'
+import * as config from './config/config'
 
 const APP = {
   name: 'Qwant Search',
@@ -34,7 +35,7 @@ class App extends Component {
   }
 
   async componentDidMount () {
-    this.masq = new Masq('Search')
+    this.masq = new Masq('Search', config.HUB_URLS)
     await this.masq.init()
 
     try {
