@@ -2,14 +2,14 @@ import React, { Component } from 'react'
 import Masq from 'masq-lib'
 
 import SearchBar from './components/SearchBar'
-import Profiles from './components/Profiles'
 
 import './App.css'
 
 const APP = {
   name: 'Qwant Search',
-  description: 'Qwant search engine',
-  image: 'https://qwant.com/img/v4/home-banner.svg?1542966874062'
+  description: 'Qwant Search app integrated with Masq',
+  image: 'https://qwant.com/img/v4/home-banner.svg?1542966874062',
+  imageURL: 'https://fr.wikipedia.org/wiki/Qwant#/media/File:Qwant_new_logo_2018.svg'
 }
 
 // function ConnectionStatus ({ isConnected }) {
@@ -23,85 +23,64 @@ class App extends Component {
     super(props)
 
     this.state = {
-      link: '#',
       items: [],
-      profiles: []
+      loggedIn: null,
+      err: null,
+      logginIn: false
     }
 
     this.masq = null
     this.onSearch = this.onSearch.bind(this)
-    this.handleClickProfile = this.handleClickProfile.bind(this)
+    this.handleClickLogin = this.handleClickLogin.bind(this)
   }
 
   async componentDidMount () {
-    this.masq = new Masq('Search')
-    await this.masq.init()
-
-    try {
-      const profiles = await this.masq.getProfiles()
-      this.setState({ profiles })
-    } catch (e) {
-      // We need to link with masq for the first time
-
-      // Retrieve link to request an access to Masq
-      const { link } = await this.masq.requestMasqAccess()
-      this.setState({ link })
-      // Waith for the operation to complete
-      await this.masq.requestMasqAccessDone()
-
-      // We can now retrieve the profiles
-      const profiles = await this.masq.getProfiles()
-      this.setState({ profiles })
+    this.masq = new Masq(APP.name, APP.description, APP.imageURL)
+    const loggedIn = this.masq.isLoggedIn()
+    if (loggedIn) {
+      try {
+        await this.masq.connectToMasq()
+        this.setState({ loggedIn })
+        const items = await this.masq.get('queryList')
+        this.setState({ items })
+      } catch (err) {
+        this.setState({ err })
+      }
     }
   }
 
   async onSearch (query) {
     const items = [...this.state.items, query]
+    this.setState({ items })
 
+    if (this.masq.isConnected()) {
+      this.syncSearchItemsWithMasq()
+    }
+  }
+
+  async syncSearchItemsWithMasq () {
     try {
       // We create one key in DB per search item instead
       // of updating an array
-      await this.masq.put(query, 'ok')
-      this.setState({ items })
+      await this.masq.put('queryList', this.state.items)
     } catch (e) {
       console.error(e.message)
     }
   }
 
-  async handleClickProfile (profile) {
-    let db = null
-    this.setState({ currentProfile: profile })
-
-    await this.masq.setProfile(profile.id)
-
-    try {
-      db = this.masq._getDB()
-    } catch (e) {
-      // Retrieve link to create the app
-      const { link } = await this.masq.exchangeDataHyperdbKeys(APP)
-      window.open(link, '_blank')
-      // Wait for the operation to complete
-      await this.masq.exchangeDataHyperdbKeysDone(APP)
-      db = this.masq._getDB()
-    }
-
-    // Retrieve existing keys, in order to
-    // retrieve items from the values stored in the DB
-    db.list('', (err, list) => {
-      if (err) console.error(err)
-      const items = list.map(nodes => nodes[0].key)
-      this.setState({ items })
-    })
+  async handleClickLogin () {
+    this.setState({ logginIn: true })
+    const { link } = await this.masq.logIntoMasq(true)
+    window.open(link, '_blank')
+    this.setState({ logginIn: false, items: this.state.items })
   }
 
   render () {
-    const { profiles, items, currentProfile, link } = this.state
+    const { items, loggedIn } = this.state
     return (
       <div className='App'>
-        {!profiles.length && <a target='_blank' rel="noopener noreferrer" href={link}>connect to masq</a>}
-        <Profiles profiles={profiles} onClick={this.handleClickProfile} />
-        {currentProfile && <p>Selected user: {currentProfile.username}</p>}
-        {currentProfile && <SearchBar onSearch={this.onSearch} items={items} />}
+        {!loggedIn && <input type="button" target='_blank' rel="noopener noreferrer" onClick={this.handleClickLogin} value="Log Into Masq"></input>}
+        <SearchBar onSearch={this.onSearch} items={items} />
       </div>
     )
   }
