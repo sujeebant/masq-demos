@@ -5,6 +5,7 @@ let profile = {
   image: 'image1'
 }
 const appName = 'app1'
+let pinCode = ''
 const debug = (str) => {
   if (process.env.NODE_ENV !== 'production') console.log(str)
 }
@@ -24,6 +25,8 @@ document.addEventListener('DOMContentLoaded', function () {
   el = document.getElementById('receiveLinkMasqProfiles')
   if (el) {
     el.addEventListener('click', function (e) {
+      pinCode = document.getElementById('pin').value
+      // console.log(pinCode)
       receiveLinkMasqProfiles()
     })
   }
@@ -60,7 +63,7 @@ const receiveLinkMasqProfiles = () => {
   el.innerHTML = fillElement(` Sync. of profiles is done, check the app.`)
   masqCore.receiveLink({
     type: 'syncProfiles',
-    channel: channel,
+    channel: channel + pinCode,
     challenge: 'challenge'
   })
 }
@@ -70,7 +73,7 @@ const receiveLinkSyncData = () => {
   el.innerHTML = fillElement(` Now add data in app, Masq will receive the same data :-;`)
   masqCore.receiveLink({
     type: 'syncData',
-    channel: channel2,
+    channel: channel2 + pinCode,
     challenge: 'challenge',
     appName: appName
   })

@@ -7,7 +7,8 @@ const pump = require('pump')
 const EventEmitter = require('events')
 const dbExists = require('./indexedDBUtils').dbExists
 
-const HUB_URL = 'localhost:8080'
+const HUB_URL = 'wss://signalhub-jvunerwwrg.now.sh'
+// const HUB_URL = 'localhost:8080'
 
 const debug = console.log
 

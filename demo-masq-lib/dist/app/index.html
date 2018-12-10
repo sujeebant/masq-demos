@@ -5,14 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Masq app</title>
+    <title>Web app</title>
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
 
     <!-- Custom styles for this template -->
-    <link href="masq.css" rel="stylesheet">
+    <link href="app.css" rel="stylesheet">
   </head>
 
   <body>
@@ -25,11 +25,11 @@
 
       <div class="collapse navbar-collapse" id="navbarsExampleDefault">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link"  href="./index.html">Masq-app <span class="sr-only">(current)</span></a>
-          </li>
           <li class="nav-item">
-            <a class="nav-link" href="./app/index.html">Masq web App</a>
+            <a class="nav-link"  href="../index.html">Masq-app</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="./index.html">Masq web App <span class="sr-only">(current)</span></a>
           </li>
         </ul>
       </div>
@@ -40,10 +40,8 @@
       <!-- Main jumbotron for a primary marketing message or call to action -->
       <div class="jumbotron">
         <div class="container">
-          <h1 class="display-4">Masq-app</h1>
-          <p>This page is a demo of masq-app, here we create profiles and authorize application to connect. This
-               is only a demo for one application which stores a list of
-                POI (Point of Interest).Open <a href="./index.html"> Masq-app</a> and the <a href="./app/index.html">web app</a> in two tabs, or better in two browsers.</p>
+          <h1 class="display-4">A web app</h1>
+          <p>This app wants to store its data in Masq. Discover how by clicking first on 'Create profile button' in Masq-app.</p>
         </div>
       </div>
 
@@ -51,48 +49,39 @@
         <!-- Example row of columns -->
         <div class="row">
           <div class="col-md-6">
-            <h3>Create a profile</h3>
-            <p>The first step is to create a profile.</p>
-            <p><a class="btn btn-primary btn-md" id="initMasqMock" href="#initMasqMock" role="button">Create profile</a></p>
+            <h3 id='connectMasqID'>Connect to Masq</h3>
+            <p>Let's ask to connect this application to Masq-app.</p>
+            <p><a class="btn btn-primary btn-md" id="connectMasq" href="#connectMasqID" role="button">Connect</a></p>
           </div>
           <div class="col-md-6">
-                <div id=step1></div>
+                <div id=receiveLinkMsgProfiles></div>
             </div>
         </div> 
         <div class="row">
                 <div class="col-md-6">
-                  <h3>Replicate masq-profiles</h3>
-                  <p>Now Masq will create a masq-profiles db and synchronize it with the web app </p>
-                  <form class="form-inline" >  
-                    <div class="form-group">
-                      <label for="pin">Pin code (4 digits):</label>
-                      <input type="text" class="input-sm" id="pin">
-                    </div>
-                    <a class="btn btn-primary btn-md" id="receiveLinkMasqProfiles" href="#receiveLinkMasqProfiles" role="button">Synchronize profiles</a>
-                  </form> 
-                  <!-- <p><a class="btn btn-primary btn-md" id="receiveLinkMasqProfiles" href="#" role="button">Synchronize profiles</a></p> -->
+                  <h3>Check profiles</h3>
+                  <p>Check if we have synced the profiles.</p>
+                  <p><a class="btn btn-primary btn-md" id="updateMasqProfiles" href="#updateMasqProfiles" role="button">Check profiles</a></p>
                 </div>
                 <div class="col-md-6">
-                      <div id=checkIfProfilesSynced></div>
+                      <div id=masqProfilesReplication></div>
                   </div>
               </div>
         <div class="row">
             <div class="col-md-6">
-                <h3>Replicate app data</h3>
-                <p>Now Masq will create a db dedicated to the web app data and synchronize it. </p>
-                <p><a class="btn btn-primary btn-md" id="receiveLinkSyncData" href="#receiveLinkSyncData" role="button">Synchronize data</a></p>
+                <h3>Add POI</h3>
+                <p>Add/update a list of POI. </p>
+                <p><a class="btn btn-primary btn-md" id="replicateData" href="#replicateData" role="button">Check data sync</a></p>
             </div>
             <div class="col-md-6">
-                <div id=addDatainApp></div>
-                    <div id=checkDataMsg></div>
-                    
+                <div id=addData></div>                    
                 </div>
             </div>
         <div class="row">
             <div class="col-md-6">
-                    <h3>A connection trouble ?</h3>
-                    <p>If you close the tab or the connection is lost, click here. </p>
-                    <p><a class="btn btn-info btn-md" id="init" href="#init" role="button">Open and sync.</a></p>
+                <h3>A connection trouble ?</h3>
+                <p>If you close the tab or the connection is lost, click here. </p>
+                <p><a class="btn btn-info btn-md" id="init" href="#init" role="button">Open and sync.</a></p>
             </div>
     
     </div>
@@ -113,6 +102,6 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="../../dist/masqMock.bundle.js"></script>
+    <script type="text/javascript" src="../masqApp.bundle.js"></script>
   </body>
 </html>

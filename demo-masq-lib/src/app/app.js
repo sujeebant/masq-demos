@@ -8,6 +8,7 @@ let masq = null
 const channel = 'randomChannel'
 const channel2 = 'randomChannel2'
 const challenge = 'challenge'
+let pinCode = ''
 const villes = data.villes
 
 console.log(Masq)
@@ -152,11 +153,12 @@ const connectMasq = async () => {
 
   // We force channel and challenge for demo purpose
 
-  masq.channel = channel
+  pinCode = Math.random().toString().substr(2, 4)
+  masq.channel = channel + pinCode
   masq.challenge = challenge
   masq.requestMasqAccess()
   let el = document.getElementById('receiveLinkMsgProfiles')
-  el.innerHTML = fillElement(` Now, please click on 'Synchronize profiles' in Masq. `)
+  el.innerHTML = fillElement(` Now, please click on 'Synchronize profiles' in Masq. <br/> Please add the following pin code next to the button ${pinCode}`)
 }
 
 const updateMasqProfiles = async () => {
@@ -167,7 +169,7 @@ const updateMasqProfiles = async () => {
     let el = document.getElementById('masqProfilesReplication')
     el.innerHTML = fillElement(` Of course your are ${profiles[0].username}, your id is  ${profiles[0].id}, now click on 'Synchronize data' for data replication and authorization`)
     masq.setProfile(profiles[0].id)
-    masq.channel = channel2
+    masq.channel = channel2 + pinCode
     masq.exchangeDataHyperdbKeys()
   } catch (error) {
     debug('error in updateMasqProfiles')
