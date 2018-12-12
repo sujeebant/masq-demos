@@ -51,18 +51,13 @@ class App extends Component {
   async componentDidMount () {
     this.masq = new Masq(APP.name, APP.description, APP.imageURL)
 
-    const { link } = await this.masq.logIntoMasq(true)
-    this.setState({ link })
-
-    const loggedIn = this.masq.isLoggedIn()
-    if (loggedIn) {
-      try {
-        await this.masq.connectToMasq()
-        this.setState({ loggedIn })
-        this.getAllQueriesFromDB()
-      } catch (err) {
-        this.setState({ err })
-      }
+    try {
+      const { link } = await this.masq.logIntoMasq(true)
+      this.setState({ link })
+      this.setState({ loggedIn })
+      this.getAllQueriesFromDB()
+    } catch (err) {
+      this.setState({ err })
     }
   }
 
