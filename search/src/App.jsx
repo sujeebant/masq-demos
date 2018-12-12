@@ -54,7 +54,7 @@ class App extends Component {
     try {
       const { link } = await this.masq.logIntoMasq(true)
       this.setState({ link })
-      this.setState({ loggedIn })
+      this.setState({ loggedIn: true })
       this.getAllQueriesFromDB()
     } catch (err) {
       this.setState({ err })
