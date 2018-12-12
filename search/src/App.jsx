@@ -26,34 +26,38 @@ class App extends Component {
       items: [],
       loggedIn: null,
       err: null,
+      link: '#'
     }
 
     this.masq = null
     this.onSearch = this.onSearch.bind(this)
     this.handleClickLogin = this.handleClickLogin.bind(this)
     this.handleClickLogout = this.handleClickLogout.bind(this)
+    this.getAllQueriesFromDB = this.getAllQueriesFromDB.bind(this)
+  }
+
+  getAllQueriesFromDB () {
+    const db = this.masq._getDB()
+
+    // Retrieve existing keys, in order to
+    // retrieve items from the values stored in the DB
+    db.list((err, list) => {
+      if (err) console.error(err)
+      const items = list.map(nodes => nodes[0].key)
+      this.setState({ items })
+    })
   }
 
   async componentDidMount () {
     this.masq = new Masq(APP.name, APP.description, APP.imageURL)
-    const loggedIn = this.masq.isLoggedIn()
-    if (loggedIn) {
-      try {
-        await this.masq.connectToMasq()
-        this.setState({ loggedIn })
-        // const items = await this.masq.get('queryList')
-        const db = this.masq._getDB()
 
-        // Retrieve existing keys, in order to
-        // retrieve items from the values stored in the DB
-        db.list((err, list) => {
-          if (err) console.error(err)
-          const items = list.map(nodes => nodes[0].key)
-          this.setState({ items })
-        })
-      } catch (err) {
-        this.setState({ err })
-      }
+    try {
+      const { link } = await this.masq.logIntoMasq(true)
+      this.setState({ link })
+      this.setState({ loggedIn })
+      this.getAllQueriesFromDB()
+    } catch (err) {
+      this.setState({ err })
     }
   }
 
@@ -71,12 +75,9 @@ class App extends Component {
 
   async handleClickLogin () {
     try {
-      const { link } = await this.masq.logIntoMasq(true)
-      window.open(link, '_blank')
       await this.masq.logIntoMasqDone()
-      this.setState({
-        loggedIn: true
-      })
+      this.setState({ loggedIn: true })
+      this.getAllQueriesFromDB()
     } catch (e) {
       console.error(e)
     }
@@ -88,19 +89,19 @@ class App extends Component {
   }
 
   render () {
-    const { items, loggedIn } = this.state
+    const { items, loggedIn, link } = this.state
     return (
       <div className='App'>
         {!loggedIn && (
-          <button
-            type="button"
+          <a
+            href={link}
             target='_blank'
             rel="noopener noreferrer"
             onClick={this.handleClickLogin}
           >Log Into Masq
-          </button>
+          </a>
         )}
-        {loggedIn && <button onClick={this.handleClickLogout}>Logout</button>}
+        {loggedIn && <a href='#' onClick={this.handleClickLogout}>Logout</a>}
         <SearchBar onSearch={this.onSearch} items={items} />
       </div>
     )
