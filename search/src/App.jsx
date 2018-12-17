@@ -37,16 +37,12 @@ class App extends Component {
     this.getAllQueriesFromDB = this.getAllQueriesFromDB.bind(this)
   }
 
-  getAllQueriesFromDB () {
-    const db = this.masq._getDB()
-
+  async getAllQueriesFromDB () {
     // Retrieve existing keys, in order to
     // retrieve items from the values stored in the DB
-    db.list((err, list) => {
-      if (err) console.error(err)
-      const items = list.map(nodes => nodes[0].key)
-      this.setState({ items })
-    })
+    const itemsObj = await this.masq.list()
+    const queryList = Object.keys(itemsObj)
+    this.setState({ items: queryList })
   }
 
   async componentDidMount () {
