@@ -27,7 +27,8 @@ class App extends Component {
       loggedIn: null,
       err: null,
       link: '#',
-      loggingIn: false
+      loggingIn: false,
+      stayConnected: false
     }
 
     this.masq = null
@@ -35,6 +36,7 @@ class App extends Component {
     this.handleClickLogin = this.handleClickLogin.bind(this)
     this.handleClickLogout = this.handleClickLogout.bind(this)
     this.getAllQueriesFromDB = this.getAllQueriesFromDB.bind(this)
+    this.handleStayConnectedChange = this.handleStayConnectedChange.bind(this)
   }
 
   async getAllQueriesFromDB () {
@@ -54,7 +56,7 @@ class App extends Component {
         this.setState({ loggedIn: true })
         await this.getAllQueriesFromDB()
       } else {
-        const { link } = await this.masq.logIntoMasq(true)
+        const { link } = await this.masq.logIntoMasq(false)
         this.setState({ link })
         this.setState({ loggedIn: false })
       }
@@ -107,19 +109,39 @@ class App extends Component {
     await this.masq.signout()
   }
 
+  async handleStayConnectedChange (event) {
+    const target = event.target
+    const stayConnected = target.checked
+    this.setState({ stayConnected })
+
+    // regenerate link
+    const { link } = await this.masq.logIntoMasq(stayConnected)
+    this.setState({ link })
+  }
+
   render () {
     const { items, loggedIn, link, loggingIn } = this.state
     return (
       <div className='App'>
         {loggedIn === null && !loggingIn && <div href='#'>Loading</div>}
         {loggedIn === false && !loggingIn && (
-          <a
-            href={link}
-            target='_blank'
-            rel="noopener noreferrer"
-            onClick={this.handleClickLogin}
-          >Log Into Masq
-          </a>
+          <div className='Login'>
+            <div className='stayConnected'>
+              <input
+                name="stayConnected"
+                type="checkbox"
+                checked={this.state.stayConnected}
+                onChange={this.handleStayConnectedChange} />
+              <label htmlFor='stayConnected'>stay connected</label>
+            </div>
+            <a
+              href={link}
+              target='_blank'
+              rel="noopener noreferrer"
+              onClick={this.handleClickLogin}
+            >Log Into Masq
+            </a>
+          </div>
         )}
         {loggedIn && !loggingIn && <a href='#' onClick={this.handleClickLogout}>Logout</a>}
         {loggingIn && <div>Logging In</div>}
