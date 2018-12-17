@@ -87,6 +87,10 @@ class App extends Component {
   }
 
   async handleClickLogin () {
+    if (!this.state.link) {
+      return
+    }
+
     this.setState({ loggingIn: true })
     try {
       await this.masq.logIntoMasqDone()
