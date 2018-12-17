@@ -105,6 +105,8 @@ class App extends Component {
   }
 
   async handleClickLogout () {
+    const { link } = await this.masq.logIntoMasq(this.state.stayConnected)
+    this.setState({ link })
     this.setState({ loggedIn: false, items: [] })
     await this.masq.signout()
   }
