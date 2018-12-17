@@ -70,3 +70,14 @@
 .SearchBar .downshiftRow {
   font-size: 20px
 }
+
+.Login {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.stayConnected {
+  margin-bottom: 10px;
+}
