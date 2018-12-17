@@ -26,7 +26,8 @@ class App extends Component {
       items: [],
       loggedIn: null,
       err: null,
-      link: '#'
+      link: '#',
+      loggingIn: false
     }
 
     this.masq = null
@@ -73,6 +74,7 @@ class App extends Component {
   }
 
   async handleClickLogin () {
+    this.setState({ loggingIn: true })
     try {
       await this.masq.logIntoMasqDone()
       this.setState({ loggedIn: true })
@@ -80,6 +82,7 @@ class App extends Component {
     } catch (e) {
       console.error(e)
     }
+    this.setState({ loggingIn: false })
   }
 
   async handleClickLogout () {
@@ -88,10 +91,11 @@ class App extends Component {
   }
 
   render () {
-    const { items, loggedIn, link } = this.state
+    const { items, loggedIn, link, loggingIn } = this.state
     return (
       <div className='App'>
-        {!loggedIn && (
+        {loggedIn === null && !loggingIn && <div href='#'>Loading</div>}
+        {loggedIn === false && !loggingIn && (
           <a
             href={link}
             target='_blank'
@@ -100,7 +104,8 @@ class App extends Component {
           >Log Into Masq
           </a>
         )}
-        {loggedIn && <a href='#' onClick={this.handleClickLogout}>Logout</a>}
+        {loggedIn && !loggingIn && <a href='#' onClick={this.handleClickLogout}>Logout</a>}
+        {loggingIn && <div>Logging In</div>}
         <SearchBar onSearch={this.onSearch} items={items} />
       </div>
     )
