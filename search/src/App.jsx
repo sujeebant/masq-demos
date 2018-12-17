@@ -49,9 +49,15 @@ class App extends Component {
     this.masq = new Masq(APP.name, APP.description, APP.imageURL)
 
     try {
-      const { link } = await this.masq.logIntoMasq(true)
-      this.setState({ link })
-      this.getAllQueriesFromDB()
+      if (this.masq.isLoggedIn()) {
+        await this.masq.connectToMasq()
+        this.setState({ loggedIn: true })
+        await this.getAllQueriesFromDB()
+      } else {
+        const { link } = await this.masq.logIntoMasq(true)
+        this.setState({ link })
+        this.setState({ loggedIn: false })
+      }
     } catch (err) {
       this.setState({ err })
     }
@@ -74,7 +80,7 @@ class App extends Component {
     try {
       await this.masq.logIntoMasqDone()
       this.setState({ loggedIn: true })
-      this.getAllQueriesFromDB()
+      await this.getAllQueriesFromDB()
     } catch (e) {
       console.error(e)
     }
