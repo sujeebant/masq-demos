@@ -68,11 +68,18 @@ class App extends Component {
       return
     }
 
+    // return if the query is already in the history
+    if (this.state.items.find(i => i === query)) {
+      const nb = await this.masq.get(query)
+      await this.masq.put(query, nb + 1)
+      return
+    }
+
     const items = [...this.state.items, query]
     try {
       // We create one key in DB per search item instead
       // of updating an array
-      await this.masq.put(query, 'ok')
+      await this.masq.put(query, 1)
       this.setState({ items })
     } catch (e) {
       console.error(e.message)
