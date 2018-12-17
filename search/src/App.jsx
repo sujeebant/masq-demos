@@ -64,6 +64,10 @@ class App extends Component {
   }
 
   async onSearch (query) {
+    if (!this.state.loggedIn) {
+      return
+    }
+
     const items = [...this.state.items, query]
     try {
       // We create one key in DB per search item instead
@@ -88,7 +92,7 @@ class App extends Component {
   }
 
   async handleClickLogout () {
-    this.setState({ loggedIn: false })
+    this.setState({ loggedIn: false, items: [] })
     await this.masq.signout()
   }
 
