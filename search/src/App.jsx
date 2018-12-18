@@ -56,9 +56,11 @@ class App extends Component {
         this.setState({ loggedIn: true })
         await this.getAllQueriesFromDB()
       } else {
-        const { link } = await this.masq.logIntoMasq(false)
-        this.setState({ link })
-        this.setState({ loggedIn: false })
+        const link = await this.masq.getLoginLink()
+        this.setState({
+          link,
+          loggedIn: false
+        })
       }
     } catch (err) {
       this.setState({ err })
@@ -95,7 +97,7 @@ class App extends Component {
 
     this.setState({ loggingIn: true })
     try {
-      await this.masq.logIntoMasqDone()
+      await this.masq.logIntoMasq(this.state.stayConnected)
       this.setState({ loggedIn: true })
       await this.getAllQueriesFromDB()
     } catch (e) {
@@ -105,9 +107,14 @@ class App extends Component {
   }
 
   async handleClickLogout () {
-    const { link } = await this.masq.logIntoMasq(this.state.stayConnected)
-    this.setState({ link })
-    this.setState({ loggedIn: false, items: [] })
+    const link = await this.masq.getLoginLink()
+
+    this.setState({
+      link,
+      loggedIn: false,
+      items: []
+    })
+
     await this.masq.signout()
   }
 
@@ -115,10 +122,6 @@ class App extends Component {
     const target = event.target
     const stayConnected = target.checked
     this.setState({ stayConnected })
-
-    // regenerate link
-    const { link } = await this.masq.logIntoMasq(stayConnected)
-    this.setState({ link })
   }
 
   render () {
