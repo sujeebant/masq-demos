@@ -2,7 +2,7 @@
   "name": "search",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://qwantresearch.github.io/masq-demos/search",
+  "homepage": "https://qwantresearch.github.io/search/build",
   "dependencies": {
     "downshift": "^1.31.7",
     "hyperdb": "^3.5.0",
