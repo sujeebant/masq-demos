@@ -1,0 +1,16 @@
+{
+  "main.css": "/search/build/static/css/main.22356e6c.chunk.css",
+  "main.js": "/search/build/static/js/main.5f9c3c4f.chunk.js",
+  "main.js.map": "/search/build/static/js/main.5f9c3c4f.chunk.js.map",
+  "static/css/1.113d52fd.chunk.css": "/search/build/static/css/1.113d52fd.chunk.css",
+  "static/js/1.37ac9d42.chunk.js": "/search/build/static/js/1.37ac9d42.chunk.js",
+  "static/js/1.37ac9d42.chunk.js.map": "/search/build/static/js/1.37ac9d42.chunk.js.map",
+  "runtime~main.js": "/search/build/static/js/runtime~main.65250f61.js",
+  "runtime~main.js.map": "/search/build/static/js/runtime~main.65250f61.js.map",
+  "static/media/index.css": "/search/build/static/media/roboto-latin-900italic.bc833e72.woff",
+  "static/css/main.22356e6c.chunk.css.map": "/search/build/static/css/main.22356e6c.chunk.css.map",
+  "static/css/1.113d52fd.chunk.css.map": "/search/build/static/css/1.113d52fd.chunk.css.map",
+  "index.html": "/search/build/index.html",
+  "precache-manifest.f58aca3c49b713cf12a41bc37265dfe8.js": "/search/build/precache-manifest.f58aca3c49b713cf12a41bc37265dfe8.js",
+  "service-worker.js": "/search/build/service-worker.js"
+}
