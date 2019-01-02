@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Masq from 'masq-lib'
+import * as QRCode from 'qrcode.react'
 
 import SearchBar from './components/SearchBar'
 
@@ -146,6 +147,7 @@ class App extends Component {
               onClick={this.handleClickLogin}
             >Log Into Masq
             </a>
+            <QRCode value={link}/>
           </div>
         )}
         {loggedIn && !loggingIn && <a href='#' onClick={this.handleClickLogout}>Logout</a>}

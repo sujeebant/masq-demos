@@ -2,17 +2,17 @@
   "name": "search",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://qwantresearch.github.io/masq-demos/search",
+  "homepage": "https://qwantresearch.github.io/search/build",
   "dependencies": {
     "downshift": "^1.31.7",
     "hyperdb": "^3.5.0",
     "masq-lib": "git+https://github.com/QwantResearch/masq-lib.git",
+    "qrcode.react": "^0.9.1",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "react-scripts": "2.1.1",
     "standard": "^11.0.1",
-    "typeface-roboto": "0.0.54",
-    "webrtc-swarm": "^2.9.0"
+    "typeface-roboto": "0.0.54"
   },
   "scripts": {
     "start": "PORT=3001 react-scripts start",
